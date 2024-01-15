@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'changePasswordPage.dart'; // Make sure you have this page created in your project
+import 'changePasswordPage.dart';
 
 class AccountPage extends StatelessWidget {
-  const AccountPage({Key? key}) : super(key: key);
-
+  const AccountPage({Key? key, required this.user}) : super(key: key);
+  final Map<String, dynamic> user;
   void _navigateToChangePassword(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const ChangePasswordPage()), // Replace with the actual ChangePasswordPage widget
+      MaterialPageRoute(builder: (context) => const ChangePasswordPage()), 
     );
   }
 
@@ -16,13 +16,13 @@ class AccountPage extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        const ListTile(
+        ListTile(
           title: Text(
-            'Username', // Replace with actual username
+            user['username'], 
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: Text(
-            'email@example.com', // Replace with the actual email
+            user['email'], 
             style: TextStyle(color: Colors.grey),
           ),
           leading: Icon(Icons.person),
@@ -38,3 +38,5 @@ class AccountPage extends StatelessWidget {
     );
   }
 }
+
+

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 class DisplayProjectPage extends StatefulWidget {
-  final String projectName = "test"; // The name of the project passed to the page
-  // You might want to pass the username here as well if it's variable
-  const DisplayProjectPage({Key? key}) : super(key: key);
+  final String projectName; 
+  DisplayProjectPage({Key? key, required this.projectName}) : super(key: key);
   @override
   _DisplayProjectPageState createState() => _DisplayProjectPageState();
 }
@@ -19,7 +18,7 @@ class _DisplayProjectPageState extends State<DisplayProjectPage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         centerTitle: true,
       ),
-      body: SingleChildScrollView( // Allows the page to be scrollable
+      body: SingleChildScrollView( 
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[

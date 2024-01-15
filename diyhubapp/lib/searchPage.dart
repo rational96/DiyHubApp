@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class SearchPage extends StatelessWidget {
-  SearchPage({Key? key}) : super(key: key);
+  SearchPage({Key? key, required this.user}) : super(key: key);
+  final Map<String, dynamic> user;
   final TextEditingController _searchController = TextEditingController();
 
   // Example search results. Replace with actual data.

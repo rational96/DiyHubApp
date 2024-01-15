@@ -14,10 +14,10 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int _selectedIndex = 1;
 
-  final List<Widget> _widgetOptions = [
-    SearchPage(),
-    ProjectPage(),
-    const AccountPage(),
+  late final List<Widget> _widgetOptions = [
+    SearchPage(user: widget.user),
+    ProjectPage(user: widget.user),
+    AccountPage(user: widget.user),
   ];
 
   void _onItemTapped(int index) {

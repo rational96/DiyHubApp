@@ -12,7 +12,6 @@ class CreateAccountPage extends StatefulWidget {
 }
 
 String hashPassword(String password) {
-  // WARNING: This is a simple hash, not suitable for production use!
   var bytes = utf8.encode(password);
   return sha256.convert(bytes).toString();
 }
@@ -73,7 +72,6 @@ class CreateAccountPageState extends State<CreateAccountPage> {
             const SizedBox(height: 25),
             ElevatedButton(
               onPressed: () async {
-                // Input validation
                 if (_passwordController.text != _confirmPasswordController.text) {
                   // Show some error that passwords do not match
                   return;
@@ -82,9 +80,44 @@ class CreateAccountPageState extends State<CreateAccountPage> {
                   // Show some error that username or email cannot be empty
                   return;
                 }
-                // More validation can be added as needed
+                if (_passwordController.text != _confirmPasswordController.text) {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        content: Text("Passwords do not match."),
+                      );
+                    },
+                  );
+                  return;
+                }
+                if (_usernameController.text.isEmpty || _emailController.text.isEmpty) {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        content: Text("Username and email cannot be empty."),
+                      );
+                    },
+                  );
+                  return;
+                }
+                var dbManager = DatabaseManager();
+                var existingUsers = await dbManager.getData('Accounts', {'username': _usernameController.text});
 
-                // Hash the password - implement the hashPassword method according to your security requirements
+                if (existingUsers.isNotEmpty) {
+                  // Username is already taken
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        content: Text("Username is already taken. Please choose another one."),
+                      );
+                    },
+                  );
+                  return;
+                }
+
                 String hashedPassword = hashPassword(_passwordController.text);
 
                 // Create a user document
@@ -92,14 +125,13 @@ class CreateAccountPageState extends State<CreateAccountPage> {
                   'username': _usernameController.text,
                   'password': hashedPassword,
                   'email': _emailController.text,
-                  'projects': [] // Starts with an empty array of projects
+                  'projects': [] 
                 };
 
                 // Insert the new user into the database
-                var dbManager = DatabaseManager();
                 await dbManager.insertData('Accounts', newUser);
-
-                // Navigate to the login page or show a success message
+                print('account made');
+                Navigator.pop(context);
               },
               child: const Text('Create Account'),
             ),
