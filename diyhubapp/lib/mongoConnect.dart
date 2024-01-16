@@ -42,6 +42,21 @@ class DatabaseManager {
     closeConnection();
   }
 
+  Future<void> updateData(String collectionName,  Map<String, dynamic> filter, Map<String, dynamic> updateQuery) async {
+    await openConnection();
+    var collection = _db.collection(collectionName);
+    await collection.update(filter, updateQuery);
+    await closeConnection();
+  }
+
+  Future<Map<String, dynamic>?> fetchUserData(String userId) async {
+    await openConnection();
+    var collection = _db.collection('Accounts');
+    var result = await collection.findOne({'username': userId});
+    await closeConnection();
+    return result;
+  }
+
 
   // ... other database methods ...
 }

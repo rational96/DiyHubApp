@@ -3,24 +3,60 @@ import 'package:flutter/material.dart';
 import 'searchPage.dart'; 
 import 'projectPage.dart'; 
 import 'accountPage.dart'; 
+import 'mongoConnect.dart';
 
 class MainPage extends StatefulWidget {
-  final Map<String, dynamic> user;
-  const MainPage({Key? key, required this.user}) : super(key: key);
+  Map<String, dynamic> user;
+  MainPage({Key? key, required this.user}) : super(key: key);
   @override
   _MainPageState createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
   int _selectedIndex = 1;
-
-  late final List<Widget> _widgetOptions = [
-    SearchPage(user: widget.user),
-    ProjectPage(user: widget.user),
-    AccountPage(user: widget.user),
+  late List<Widget> _widgetOptions = [
+      SearchPage(user: widget.user),
+      ProjectPage(user: widget.user),
+      AccountPage(user: widget.user),
   ];
+  
 
-  void _onItemTapped(int index) {
+  @override
+  void initState() {
+    super.initState();
+    _refreshUser();
+  }
+
+  void _refreshUser() async {
+    try {
+      String userId = widget.user['username']; // Replace with actual user id key if different
+      var freshUserData = await DatabaseManager().fetchUserData(userId);
+      if (freshUserData != null) {
+        setState(() {
+          widget.user = freshUserData; // Update the user data
+          _updateWidgetOptions(); // Refresh the pages with the new user data
+        });
+      } else {
+        // Handle the case where no user data was fetched
+      }
+    } catch (e) {
+      // Handle the error
+    }
+  }
+  void _updateWidgetOptions() {
+    setState((){
+      _widgetOptions = [
+        SearchPage(user: widget.user),
+        ProjectPage(user: widget.user),
+        AccountPage(user: widget.user),
+      ];
+    });
+  }
+
+  void _onItemTapped(int index) async {
+    if (_selectedIndex != index) {
+       _refreshUser(); // Refresh user data when switching tabs
+    }
     setState(() {
       _selectedIndex = index;
     });
@@ -57,9 +93,9 @@ class _MainPageState extends State<MainPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const CreateProjectPage()
+              builder: (context) => CreateProjectPage(user: widget.user)
             )
-          );
+          ).then((_) => _refreshUser());
         },
         child: const Icon(Icons.add),
       ) : null,

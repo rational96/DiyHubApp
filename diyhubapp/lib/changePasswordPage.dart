@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:crypto/crypto.dart';
+import 'dart:convert';
+import 'mongoConnect.dart';
 
 class ChangePasswordPage extends StatefulWidget {
-  const ChangePasswordPage({super.key});
+  const ChangePasswordPage({Key? key, required this.user}) : super(key: key);
+  final Map<String, dynamic> user;
 
   @override
   _ChangePasswordPageState createState() => _ChangePasswordPageState();
@@ -12,11 +16,51 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   final TextEditingController _newPasswordController = TextEditingController();
   final TextEditingController _confirmNewPasswordController = TextEditingController();
 
-  void _changePassword() {
-    // TODO: Implement your change password logic
-    print('Change password tapped');
+  void _changePassword() async {
+    String oldPassword = _oldPasswordController.text;
+    String newPassword = _newPasswordController.text;
+    String confirmNewPassword = _confirmNewPasswordController.text;
+
+    var oldPasswordHash = sha256.convert(utf8.encode(oldPassword));
+
+    if (oldPasswordHash != widget.user['password']) {
+      _showMessage('Incorrect old password', context);
+      return;
+    }
+
+    if (newPassword != confirmNewPassword) {
+      _showMessage('New passwords do not match', context);
+      return;
+    }
+
+    var newPasswordHash = sha256.convert(utf8.encode(newPassword));
+
+    if (newPassword == oldPassword) {
+      _showMessage('New password must be different from old password', context);
+      return;
+    }
+
+    // This is where you would call your backend service to update the user's password
+    var userId = widget.user['id']; // Replace with actual user id key if different
+
+    // Create the filter query to find the user document.
+    var filterQuery = {'_id': userId};
+
+    // Create the update query to set the new password.
+    var updateQuery = {
+      '\$set': {'password': newPasswordHash.toString()}
+    };
+    await DatabaseManager().updateData('Accounts', filterQuery, updateQuery);
+    // For now, let's just print a confirmation message
+    print('Password changed successfully');
+
     // Pop the current page off the navigation stack after changing password
-    Navigator.of(context).pop();
+    Navigator.of(context).pop();  
+  }
+
+  void _showMessage(String message, BuildContext context) {
+    final snackBar = SnackBar(content: Text(message));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   @override

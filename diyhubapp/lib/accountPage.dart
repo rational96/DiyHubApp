@@ -7,7 +7,7 @@ class AccountPage extends StatelessWidget {
   void _navigateToChangePassword(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const ChangePasswordPage()), 
+      MaterialPageRoute(builder: (context) => ChangePasswordPage(user : user)), 
     );
   }
 
