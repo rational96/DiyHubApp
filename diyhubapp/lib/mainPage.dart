@@ -29,19 +29,15 @@ class _MainPageState extends State<MainPage> {
 
   void _refreshUser() async {
     try {
-      String userId = widget.user['username']; // Replace with actual user id key if different
+      String userId = widget.user['username']; 
       var freshUserData = await DatabaseManager().fetchUserData(userId);
       if (freshUserData != null) {
         setState(() {
-          widget.user = freshUserData; // Update the user data
-          _updateWidgetOptions(); // Refresh the pages with the new user data
+          widget.user = freshUserData; 
+          _updateWidgetOptions(); 
         });
-      } else {
-        // Handle the case where no user data was fetched
       }
-    } catch (e) {
-      // Handle the error
-    }
+    } catch (e) {}
   }
 
   

@@ -61,9 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                   Navigator.of(context).pushReplacement(
                      MaterialPageRoute(builder: (context) => MainPage(user: userInfo))
                    );
-                } else {
-                  print('cannot find, error');
-                }
+                } 
               },
               child: Text('Login'),
             ),

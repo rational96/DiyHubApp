@@ -28,7 +28,7 @@ class _SearchPageState extends State<SearchPage> {
 
   void _performSearch(String query) async {
     var results = await DatabaseManager().getData('Projects', {
-      'title': {'\$regex': query, '\$options': 'i'} // This is a MongoDB regex query for case-insensitive partial matches
+      'title': {'\$regex': query, '\$options': 'i'} 
     });
 
     setState(() {
@@ -71,11 +71,11 @@ class _SearchPageState extends State<SearchPage> {
             itemBuilder: (context, index) {
               return ListTile(
                 title: Text(
-                  _searchResults[index]['title'], // Assuming 'title' is the field name in your documents
+                  _searchResults[index]['title'], 
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 subtitle: Text(
-                  _searchResults[index]['username'] ?? 'Unknown', // Adjust field name as necessary
+                  _searchResults[index]['username'] ?? 'Unknown',
                   style: const TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 onTap: () {
@@ -86,7 +86,6 @@ class _SearchPageState extends State<SearchPage> {
                       builder: (context) => DisplayProjectPage(projectName: projectName),
                     ),
                   );
-                  // Implement what happens when you tap the project
                 },
               );
             },

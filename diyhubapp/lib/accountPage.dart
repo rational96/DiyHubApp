@@ -37,14 +37,14 @@ class AccountPage extends StatelessWidget {
         ElevatedButton(
           onPressed: () => _navigateToChangePassword(context),
           style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.white, backgroundColor: Theme.of(context).colorScheme.primary, // Text color
+            foregroundColor: Colors.white, backgroundColor: Theme.of(context).colorScheme.primary, 
           ),
           child: const Text('Change Password'),
         ),
         ElevatedButton(
           onPressed: () => _navigateToLogin(context),
           style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.white, backgroundColor: Theme.of(context).colorScheme.primary, // Text color
+            foregroundColor: Colors.white, backgroundColor: Theme.of(context).colorScheme.primary, 
           ),
           child: const Text('Sign Out'),
         ),

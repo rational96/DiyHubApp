@@ -40,21 +40,16 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       return;
     }
 
-    // This is where you would call your backend service to update the user's password
-    var userId = widget.user['username']; // Replace with actual user id key if different
+    var userId = widget.user['username']; 
 
-    // Create the filter query to find the user document.
     var filterQuery = {'username': userId};
 
-    // Create the update query to set the new password.
     var updateQuery = {
       '\$set': {'password': newPasswordHash.toString()}
     };
     await DatabaseManager().updateData('Accounts', filterQuery, updateQuery);
-    // For now, let's just print a confirmation message
     _showMessage('Password changed successfully', context);
 
-    // Pop the current page off the navigation stack after changing password
     Navigator.of(context).pop();  
   }
 

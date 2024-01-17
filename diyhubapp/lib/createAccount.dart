@@ -129,7 +129,6 @@ class CreateAccountPageState extends State<CreateAccountPage> {
                 };
 
                 await dbManager.insertData('Accounts', newUser);
-                print('account made');
                 Navigator.pop(context);
               },
               child: const Text('Create Account'),
