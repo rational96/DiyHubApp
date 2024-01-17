@@ -43,6 +43,8 @@ class _MainPageState extends State<MainPage> {
       // Handle the error
     }
   }
+
+  
   void _updateWidgetOptions() {
     setState((){
       _widgetOptions = [
@@ -55,7 +57,7 @@ class _MainPageState extends State<MainPage> {
 
   void _onItemTapped(int index) async {
     if (_selectedIndex != index) {
-       _refreshUser(); // Refresh user data when switching tabs
+       _refreshUser(); 
     }
     setState(() {
       _selectedIndex = index;

@@ -72,12 +72,15 @@ class CreateAccountPageState extends State<CreateAccountPage> {
             const SizedBox(height: 25),
             ElevatedButton(
               onPressed: () async {
-                if (_passwordController.text != _confirmPasswordController.text) {
-                  // Show some error that passwords do not match
-                  return;
-                }
-                if (_usernameController.text.isEmpty || _emailController.text.isEmpty) {
-                  // Show some error that username or email cannot be empty
+                if (_usernameController.text.isEmpty || _emailController.text.isEmpty || _passwordController.text.isEmpty || _confirmPasswordController.text.isEmpty) {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        content: Text("Fields can not be left empty."),
+                      );
+                    },
+                  );
                   return;
                 }
                 if (_passwordController.text != _confirmPasswordController.text) {
@@ -106,7 +109,6 @@ class CreateAccountPageState extends State<CreateAccountPage> {
                 var existingUsers = await dbManager.getData('Accounts', {'username': _usernameController.text});
 
                 if (existingUsers.isNotEmpty) {
-                  // Username is already taken
                   showDialog(
                     context: context,
                     builder: (context) {
@@ -119,8 +121,6 @@ class CreateAccountPageState extends State<CreateAccountPage> {
                 }
 
                 String hashedPassword = hashPassword(_passwordController.text);
-
-                // Create a user document
                 Map<String, dynamic> newUser = {
                   'username': _usernameController.text,
                   'password': hashedPassword,
@@ -128,7 +128,6 @@ class CreateAccountPageState extends State<CreateAccountPage> {
                   'projects': [] 
                 };
 
-                // Insert the new user into the database
                 await dbManager.insertData('Accounts', newUser);
                 print('account made');
                 Navigator.pop(context);

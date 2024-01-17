@@ -40,8 +40,6 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
 
     await DatabaseManager().updateData('Accounts', filterQuery, updateQuery);
     Navigator.pop(context);
-    // Implement your save logic here
-    print('Save project details');
   }
 
 

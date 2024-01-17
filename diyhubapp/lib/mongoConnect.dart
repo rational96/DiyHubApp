@@ -36,7 +36,7 @@ class DatabaseManager {
   }
 
   Future<void> deleteData(String collectionName, Map<String, dynamic> query) async {
-    openConnection();
+    await openConnection();
     var collection = _db.collection(collectionName);
     await collection.deleteOne(query);
     closeConnection();
@@ -57,6 +57,11 @@ class DatabaseManager {
     return result;
   }
 
-
-  // ... other database methods ...
+  Future<Map<String, dynamic>?> getProjectData(String projectName) async {
+    await openConnection();
+    var collection = _db.collection('Projects'); 
+    var result = await collection.findOne({'title': projectName});
+    await closeConnection();
+    return result;
+  }
 }
