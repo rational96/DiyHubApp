@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'mongoConnect.dart';
 
 class CreateProjectPage extends StatefulWidget {
-  const CreateProjectPage({Key? key}) : super(key: key);
+  CreateProjectPage({Key? key, required this.user}) : super(key: key);
+  Map<String, dynamic> user; 
   @override
   _CreateProjectPageState createState() => _CreateProjectPageState();
 }
@@ -11,10 +13,36 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
   final List<TextEditingController> _materialsControllers = [TextEditingController()];
   final List<TextEditingController> _stepsControllers = [TextEditingController()];
 
-  void _saveProjectDetails() {
-    // Implement your save logic here
-    print('Save project details');
+  void _saveProjectDetails() async {
+    String title = _titleController.text;
+    String username = widget.user['username'];
+    List<String> materials = getMaterialsText();
+    List<String> steps = getStepsText();
+
+    var newProject = {
+      'title': title,
+      'username': username,
+      'materials': materials,
+      'steps': steps,
+    };
+
+    await DatabaseManager().insertData('Projects', newProject);
+
+    var filterQuery = {
+     'username': username
+    };
+
+    var updateQuery = {
+      '\$push': {
+        'projects': title
+      }
+    };
+
+    await DatabaseManager().updateData('Accounts', filterQuery, updateQuery);
+    Navigator.pop(context);
   }
+
+
 
   void _addNewMaterialField() {
     setState(() {
@@ -22,10 +50,26 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
     });
   }
 
+  List<String> getMaterialsText() {
+   List<String> materialsText = [];
+    for (TextEditingController controller in _materialsControllers) {
+      materialsText.add(controller.text);
+    }
+    return materialsText;
+  }
+
   void _addNewStepField() {
     setState(() {
       _stepsControllers.add(TextEditingController());
     });
+  }
+
+  List<String> getStepsText() {
+   List<String> stepsText = [];
+    for (TextEditingController controller in _stepsControllers) {
+      stepsText.add(controller.text);
+    }
+    return stepsText;
   }
 
   @override

@@ -55,16 +55,13 @@ class _LoginPageState extends State<LoginPage> {
                 List<Map<String, dynamic>> users = await dbManager.getData('Accounts', {
                   'username': _usernameController.text,
                 });
-
-                // Check if any user was found and compare the hashed passwords
+                
                 if (users.isNotEmpty && users[0]['password'] == hashedInputPassword) {
                   var userInfo = users.first;
                   Navigator.of(context).pushReplacement(
                      MaterialPageRoute(builder: (context) => MainPage(user: userInfo))
                    );
-                } else {
-                  print('cannot find, error');
-                }
+                } 
               },
               child: Text('Login'),
             ),
