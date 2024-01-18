@@ -2,6 +2,7 @@
 
 this app has an older version i created but crashed and corrupted.
 i had a hard copy on my drive from before the crash so i started a new project with the backup
+link to old repo before crash <https://github.com/rational96/diyhub>
 
 
 the app starts in the main page which directs it to login.
